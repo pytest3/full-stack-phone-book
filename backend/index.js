@@ -1,12 +1,14 @@
 const express = require("express");
 let persons = require("./src/models/data.js");
-const fs = require("fs");
+// const fs = require("fs");
+const cors = require("cors");
 const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 const app = express();
 const port = 3000;
 
+app.use(cors());
 app.use(express.json());
 
 morgan.token("body", function getBody(req) {
@@ -29,9 +31,6 @@ app.use(
 );
 // app.use(bodyParser.json());
 // app.use(bodyParser.urlencoded({ extended: true }));
-
-console.log(persons);
-console.log(typeof persons);
 
 app.get("/", (req, res) => {
   res.send("Hello World");
