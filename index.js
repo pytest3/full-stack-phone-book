@@ -58,11 +58,21 @@ app.get("/info", (req, res) => {
 });
 
 app.post("/api/persons", (req, res) => {
-  console.log(req.get("Content-Type"));
+  const { name, number } = req.body;
 
+  if (!name) {
+    res.status(404).send({ error: "name must be present" });
+  }
+  if (!number) {
+    res.status(404).send({ error: "number must be present" });
+  }
+  if (persons.find((i) => i.name === name)) {
+    res.status(404).send({ error: "name must be unique" });
+  }
+
+  const newPerson = { id: crypto.randomUUID(), ...req.body };
+  persons = [...persons, newPerson];
   res.end();
 });
-
-// console.log(app._router.stack);
 
 app.listen(port, () => console.log("listening on port 3000"));
