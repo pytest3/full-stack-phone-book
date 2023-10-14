@@ -16,7 +16,7 @@ module.exports = [
   },
   {
     id: 4,
-    name: "Mary Poppendieck",
+    name: "Mary Poppendieckk",
     number: "39-23-6423122",
   },
 ];
