@@ -1,8 +1,6 @@
 const express = require("express");
 let persons = require("./src/models/data.js");
-// const fs = require("fs");
 const cors = require("cors");
-const bodyParser = require("body-parser");
 const morgan = require("morgan");
 
 const app = express();
@@ -55,17 +53,6 @@ app.delete("/api/persons/:id", (req, res) => {
   persons = persons.filter((i) => {
     return i.id !== Number(id);
   });
-  // fs.writeFile(
-  //   "./src/models/data.js",
-  //   JSON.stringify(`module.exports=${JSON.stringify(newPersons)}`),
-  //   "utf8",
-  //   (err) => {
-  //     if (err) {
-  //       console.log(err);
-  //     }
-  //   }
-  // );
-
   res.status(204).end();
 });
 
