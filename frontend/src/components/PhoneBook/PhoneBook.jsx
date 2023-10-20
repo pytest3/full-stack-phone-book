@@ -12,17 +12,32 @@ export default function PhoneBook() {
     async function fetchData() {
       const response = await fetch(baseURL);
       const data = await response.json();
+      console.log(data);
+
       setPerson(data);
     }
     fetchData();
   }, []);
 
   return (
-    <div>
-      <h1>PhoneBook!!</h1>
-      {persons.map((i) => (
-        <div key={i.id}>{i.name}</div>
-      ))}
-    </div>
+    <table>
+      <caption>PhoneBook!</caption>
+      <tbody>
+        <tr>
+          <th scope="col">Id</th>
+          <th scope="col">First name</th>
+          <th scope="col">Last name</th>
+          <th scope="col">Mobile</th>
+        </tr>
+        {persons.map((i) => (
+          <tr key={i.id}>
+            <td>{i.id}</td>
+            <td>{i.first_name}</td>
+            <td>{i.last_name}</td>
+            <td>{i.mobile}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
   );
 }

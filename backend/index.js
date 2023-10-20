@@ -57,7 +57,7 @@ app.get("/api/persons", (req, res) => {
       console.log("Error executing query", error.stack);
       res.status(503).send(result.rows || "error");
     }
-    res.send(JSON.stringify(result, null, 4));
+    res.send(JSON.stringify(result.rows, null, 4));
     console.log(result.rows);
   }
   pool.query("SELECT * FROM students", queryCallback);
@@ -94,38 +94,37 @@ app.get("/info", (req, res) => {
   );
 });
 
-// app.post("/api/persons", (req, res) => {
-//   const { firstName, lastName, mobile, gender } = req.body;
+app.post("/api/persons", (req, res) => {
+  const { firstName, lastName, mobile, gender } = req.body;
 
-//   if (!name) {
-//     res.status(404).send({ error: "name must be present" });
-//   }
-//   if (!number) {
-//     res.status(404).send({ error: "number must be present" });
-//   }
-//   if (persons.find((i) => i.name === name)) {
-//     res.status(404).send({ error: "name must be unique" });
-//   }
+  if (!firstName || !lastName) {
+    res.status(404).send({ error: "name must be present" });
+  }
+  if (!mobile) {
+    res.status(404).send({ error: "number must be present" });
+  }
 
-//   const values = [firstName, lastName, mobile, gender];
-//   const sqlText =
-//     "INSERT INTO students(first_name, last_name, mobile, gender) VALUES ($1, $2, $3, $4)";
+  const values = [firstName, lastName, mobile, gender];
+  const sqlText =
+    "INSERT INTO students(first_name, last_name, mobile, gender) VALUES ($1, $2, $3, $4)";
 
-//   function handleAddPerson(err, result) {
-//     if (err) {
-//       console.log(err);
-//       res.status(503).end();
-//     }
+  function handleAddPerson(err, result) {
+    if (err) {
+      console.log(err);
+      res.status(503).send(result.rows);
+    }
 
-//     res.send(result.rows);
-//   }
+    console.log(result.rows);
+    // res.send(JSON.stringify(result.rows, null, 4));
+    res.send(JSON.stringify(result.rows));
+  }
 
-//   pool.request(sqlText, values, handleAddPerson);
+  pool.query(sqlText, values, handleAddPerson);
 
-//   const newPerson = { id: crypto.randomUUID(), ...req.body };
-//   persons = [...persons, newPerson];
-//   res.end();
-// });
+  // const newPerson = { id: crypto.randomUUID(), ...req.body };
+  // persons = [...persons, newPerson];
+  // res.end();
+});
 
 app.put("/api/persons/:id", (req, res) => {
   const id = req.params.id;
